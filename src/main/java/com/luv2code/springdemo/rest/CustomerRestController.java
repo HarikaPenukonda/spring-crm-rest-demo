@@ -28,8 +28,13 @@ public class CustomerRestController {
 	// add mapping for GET/customers/{customerId}
 	@GetMapping("/customers/{customerId}")
 	public Customer getCustomer(@PathVariable int customerId) {
-		
+		// If customerid is not found in the database, returns null
 		Customer theCustomer = customerService.getCustomer(customerId);
+		
+		if(theCustomer == null) {
+			throw new CustomerNotFoundException("customer id not found - " + customerId);
+		}
+		// For null objects, Jackson returns empty body
 		return theCustomer;
 		
 	}
